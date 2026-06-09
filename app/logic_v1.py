@@ -13,7 +13,7 @@ def pos_valida(r: int, c: int) -> bool:
     return 0 <= r < 5 and 0 <= c < 5
 
 def choose_setup(board: list[list[Cell]]) -> SetupResponse:
-    # Prioriza o centro e os anéis internos para domínio territorial inicial
+    # Prioriza o centro e os aneis internos para domínio territorial inicial
     preferencias = [(2, 2), (1, 2), (2, 1), (2, 3), (3, 2), (1, 1), (1, 3), (3, 1), (3, 3)]
     for r, c in preferencias:
         if board[r][c].level == 0 and board[r][c].professor is None:
@@ -49,7 +49,7 @@ def choose_turn(board: list[list[Cell]], team_id: int) -> Optional[PlayerTurnRes
                 casa_mov = board[mov_r][mov_c]
                 if casa_mov.professor is None and casa_mov.level <= aliado["lvl"] + 1 and casa_mov.level < 4:
                     
-                    # Condição de Vitória Imediata
+                    # Condição de Vitória
                     if casa_mov.level == 3:
                         for br, bc in DIRECOES:
                             bld_r, bld_c = mov_r + br, mov_c + bc
@@ -76,36 +76,29 @@ def avaliar_estado(mov_r: int, mov_c: int, lvl_novo: int, bld_r: int, bld_c: int
     pontos = lvl_novo * 1000 # Fator base de progressão altimétrica
     novo_lvl_construido = bld_lvl + 1
     
-    # Xeque-Mate Ofensivo: Escalar para o Nível 2 e preparar uma casa de Nível 3 adjacente.
     if lvl_novo == 2 and novo_lvl_construido == 3:
         dist_mov_bld = max(abs(mov_r - bld_r), abs(mov_c - bld_c))
         if dist_mov_bld <= 1:
             pontos += 5000
 
-    # Otimização de Rota: Constrói um degrau acessível para o próprio agente no próximo turno.
     if novo_lvl_construido == lvl_novo + 1:
         pontos += 300
 
-    # Fator de Gravidade Central: Penaliza distanciamento do centro geográfico (coordenada 2,2).
     pontos -= (abs(mov_r - 2) + abs(mov_c - 2)) * 10
     
-    # Módulo de Análise e Mitigação de Ameaças Inimigas
     for inimigo in inimigos:
         dist_inimigo_bld = max(abs(inimigo["r"] - bld_r), abs(inimigo["c"] - bld_c))
         dist_inimigo_mov = max(abs(inimigo["r"] - mov_r), abs(inimigo["c"] - mov_c))
 
-        # Ameaça Nível 2 (Iminência de Derrota)
         if inimigo["lvl"] == 2 and dist_inimigo_bld <= 1:
             if novo_lvl_construido == 4:
-                pontos += 8000 # Bloqueio Crítico (inutiliza a casa de vitória inimiga)
+                pontos += 8000 # Bloqueio Crítico
             elif novo_lvl_construido == 3:
-                pontos -= 10000 # Falha Crítica (constrói o degrau de vitória para o inimigo)
+                pontos -= 10000 # Falha Crítica
 
-        # Prevenção Precoce: Evita construir Nível 2 próximo a inimigos de Nível 1.
         if inimigo["lvl"] == 1 and dist_inimigo_bld <= 1 and novo_lvl_construido == 2:
             pontos -= 2000
 
-        # Risco de Emboscada: Penaliza movimento para uma zona dominada pelo inimigo.
         if dist_inimigo_mov <= 1 and inimigo["lvl"] >= lvl_novo - 1:
             pontos -= 500
 
