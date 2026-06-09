@@ -34,8 +34,8 @@ A lógica da IA assume as seguintes regras principais:
 2. A casa de destino precisa estar dentro do tabuleiro.
 3. A casa de destino precisa estar vazia.
 4. O professor não pode subir mais de 1 nível por movimento.
-5. Casas de nível `4` são bloqueadas.
-6. Mover para uma casa de nível `3` representa vitória.
+5. Casas de nível `GRADUADO` são bloqueadas.
+6. Mover para uma casa de nível `4` representa vitória.
 7. Depois de mover, o professor constrói em uma casa adjacente ao destino.
 8. A casa de origem fica livre depois do movimento, então pode receber construção.
 
