@@ -2,7 +2,7 @@
 
 ## 1. Visão geral
 
-O **PalermaBot_1** é a primeira inteligência artificial do projeto. Ele é implementado no arquivo `[logic_v1.py]'(https://github.com/EricDonat0/pi5-api-ai/blob/main/app/logic_v1.py) e funciona como um bot **heurístico guloso**: em cada turno, ele gera todas as jogadas legais disponíveis no tabuleiro, calcula uma nota para cada combinação de movimento + construção e escolhe a maior nota.
+O **PalermaBot_1** é a primeira inteligência artificial do projeto. Ele é implementado no arquivo [`logic_v1.py'](https://github.com/EricDonat0/pi5-api-ai/blob/main/app/logic_v1.py) e funciona como um bot **heurístico guloso**: em cada turno, ele gera todas as jogadas legais disponíveis no tabuleiro, calcula uma nota para cada combinação de movimento + construção e escolhe a maior nota.
 
 Em termos simples, ele **não simula o futuro completo da partida**. Ele olha o estado atual, calcula o impacto imediato da própria jogada e retorna a ação que parece mais forte naquele momento. Isso faz dele uma IA rápida, simples, estável e fácil de entender, mas também mais vulnerável a armadilhas de médio prazo.
 
