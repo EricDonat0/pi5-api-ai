@@ -23,7 +23,7 @@ Em termos simples, ele **não simula o futuro completo da partida**. Ele olha o 
 
 ## 2. Contexto do jogo
 
-O jogo é inspirado em Santorini/Palerma. O tabuleiro tem tamanho fixo de **5x5**. Cada célula possui:
+O jogo é inspirado em Santorini. O tabuleiro tem tamanho fixo de **5x5**. Cada célula possui:
 
 - `level`: altura da construção naquela casa;
 - `professor`: nome do professor ocupando a casa, ou `None` se estiver vazia.
