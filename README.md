@@ -969,12 +969,6 @@ Por isso, sempre que possível, os motores devem:
 - evitar movimentos ilegais;
 - retornar fallback seguro.
 
-### Cuidado com `mentor_at`
-
-Alguns validadores aceitam `mentor_at = null` em jogadas vencedoras. Outros exigem uma construção mesmo após o movimento.
-
-Se houver rejeição por schema, adapte a resposta para sempre incluir uma construção válida quando possível.
-
 ---
 
 ## Possíveis melhorias futuras
