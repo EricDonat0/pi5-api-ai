@@ -2,7 +2,7 @@
 
 ## 1. Visão geral
 
-O **PalermaBot_1** é a primeira inteligência artificial do projeto. Ele é implementado no arquivo `logic_v1.py` e funciona como um bot **heurístico guloso**: em cada turno, ele gera todas as jogadas legais disponíveis no tabuleiro, calcula uma nota para cada combinação de movimento + construção e escolhe a maior nota.
+O **PalermaBot_1** é a primeira inteligência artificial do projeto. Ele é implementado no arquivo [`logic_v1.py`](https://github.com/EricDonat0/pi5-api-ai/blob/main/app/logic_v1.py) e funciona como um bot **heurístico guloso**: em cada turno, ele gera todas as jogadas legais disponíveis no tabuleiro, calcula uma nota para cada combinação de movimento + construção e escolhe a maior nota.
 
 Em termos simples, ele **não simula o futuro completo da partida**. Ele olha o estado atual, calcula o impacto imediato da própria jogada e retorna a ação que parece mais forte naquele momento. Isso faz dele uma IA rápida, simples, estável e fácil de entender, mas também mais vulnerável a armadilhas de médio prazo.
 
@@ -23,7 +23,7 @@ Em termos simples, ele **não simula o futuro completo da partida**. Ele olha o 
 
 ## 2. Contexto do jogo
 
-O jogo é inspirado em Santorini/Palerma. O tabuleiro tem tamanho fixo de **5x5**. Cada célula possui:
+O jogo é inspirado em Santorini. O tabuleiro tem tamanho fixo de **5x5**. Cada célula possui:
 
 - `level`: altura da construção naquela casa;
 - `professor`: nome do professor ocupando a casa, ou `None` se estiver vazia.
@@ -34,8 +34,8 @@ A lógica da IA assume as seguintes regras principais:
 2. A casa de destino precisa estar dentro do tabuleiro.
 3. A casa de destino precisa estar vazia.
 4. O professor não pode subir mais de 1 nível por movimento.
-5. Casas de nível `4` são bloqueadas.
-6. Mover para uma casa de nível `3` representa vitória.
+5. Casas de nível `GRADUADO` são bloqueadas.
+6. Mover para uma casa de nível `4` representa vitória.
 7. Depois de mover, o professor constrói em uma casa adjacente ao destino.
 8. A casa de origem fica livre depois do movimento, então pode receber construção.
 

@@ -1,10 +1,10 @@
-# Documentação Técnica — Eriguei (`logic_v3.py`)
+# Documentação Técnica — Boboca (`logic_v3.py`)
 
 ## 1. Visão geral
 
-O **Eriguei** é a terceira inteligência artificial do projeto, implementada no arquivo `logic_v3.py`. Ele é o bot mais avançado da família porque deixa de ser apenas uma heurística tática e passa a usar **busca adversarial**, isto é, ele tenta prever não apenas sua própria melhor jogada, mas também a melhor resposta possível do adversário.
+O **Boboca** é a terceira inteligência artificial do projeto, implementada no arquivo `logic_v3.py`. Ele é o bot mais avançado da família porque deixa de ser apenas uma heurística tática e passa a usar **busca adversarial**, isto é, ele tenta prever não apenas sua própria melhor jogada, mas também a melhor resposta possível do adversário.
 
-A arquitetura do Eriguei é inspirada em motores clássicos de jogos de tabuleiro:
+A arquitetura do Boboca é inspirada em motores clássicos de jogos de tabuleiro:
 
 - geração completa de jogadas legais;
 - representação interna imutável do estado;
@@ -23,7 +23,7 @@ Esse tipo de IA é adequado para jogos determinísticos, pequenos e de informaç
 
 | Item | Valor |
 |---|---|
-| Nome do jogador | `Eriguei` |
+| Nome do jogador | `Boboca` |
 | Arquivo | `logic_v3.py` |
 | Tipo de IA | Busca adversarial com heurística |
 | Algoritmo principal | Negamax com poda alfa-beta |
@@ -38,7 +38,7 @@ Esse tipo de IA é adequado para jogos determinísticos, pequenos e de informaç
 
 ## 2. Filosofia da IA
 
-O Eriguei parte de uma premissa competitiva:
+O Boboca parte de uma premissa competitiva:
 
 > Uma jogada só é realmente boa se continuar boa depois da melhor resposta do adversário.
 
@@ -109,7 +109,7 @@ WIN_LEVEL = 3
 | `MAX_LEVEL` | nível máximo/cúpula/bloqueio |
 | `WIN_LEVEL` | nível que vence a partida |
 
-O Eriguei usa um tabuleiro linearizado de 25 posições para ganhar desempenho.
+O Boboca usa um tabuleiro linearizado de 25 posições para ganhar desempenho.
 
 ---
 
@@ -125,7 +125,7 @@ TEAM_TO_PROF_INDEXES = {
 OPPONENT_TEAM = {1: 2, 2: 1}
 ```
 
-Em vez de trabalhar diretamente com nomes em toda a busca, o Eriguei converte professores para índices:
+Em vez de trabalhar diretamente com nomes em toda a busca, o Boboca converte professores para índices:
 
 | Professor | Índice |
 |---|---:|
@@ -192,7 +192,7 @@ CANDIDATE_LIMIT_BY_DEPTH = {
 }
 ```
 
-Em profundidades maiores, o número de jogadas possíveis cresce rapidamente. Para manter a busca viável, o Eriguei ordena as jogadas e limita a quantidade explorada em alguns níveis.
+Em profundidades maiores, o número de jogadas possíveis cresce rapidamente. Para manter a busca viável, o Boboca ordena as jogadas e limita a quantidade explorada em alguns níveis.
 
 Isso é uma técnica prática comum em motores de jogo:
 
@@ -204,7 +204,7 @@ gerar muitas jogadas -> ordenar por prioridade -> analisar primeiro as mais prom
 
 ## 9. Linearização do tabuleiro
 
-O Eriguei converte `(row, col)` para um índice único:
+O Boboca converte `(row, col)` para um índice único:
 
 ```python
 def _idx(row: int, col: int) -> int:
@@ -246,7 +246,7 @@ NEIGHBORS = tuple(
 )
 ```
 
-Em vez de recalcular vizinhos toda hora, o Eriguei pré-calcula todos os vizinhos das 25 casas.
+Em vez de recalcular vizinhos toda hora, o Boboca pré-calcula todos os vizinhos das 25 casas.
 
 Vantagens:
 
@@ -554,7 +554,7 @@ Um professor preso é um grande problema. A IA penaliza severamente baixa mobili
 
 ## 22. Potenciais de subida e ameaça
 
-Dentro de `_worker_features`, o Eriguei analisa vizinhos:
+Dentro de `_worker_features`, o Boboca analisa vizinhos:
 
 ```python
 if target_level == WIN_LEVEL and level >= WIN_LEVEL - 1:
@@ -680,7 +680,7 @@ Duas ameaças de vitória costumam ser muito fortes, porque o adversário talvez
 
 ## 28. Ordenação de jogadas
 
-Antes de pesquisar a árvore, o Eriguei ordena as jogadas.
+Antes de pesquisar a árvore, o Boboca ordena as jogadas.
 
 ```python
 moves.sort(key=lambda m: _move_order_score(state, m, team_id, tt_best), reverse=True)
@@ -842,7 +842,7 @@ Quando a busca não pode ir mais fundo, usa a heurística.
 
 ## 36. Tabela de transposição
 
-O Eriguei usa chave:
+O Boboca usa chave:
 
 ```python
 key = (state.levels, state.positions, int(team_id), int(depth))
@@ -962,7 +962,7 @@ Isso impede que, por falta de tempo, o bot escolha uma jogada que entrega vitór
 
 ---
 
-## 42. Fluxograma do Eriguei
+## 42. Fluxograma do Boboca
 
 ```mermaid
 flowchart TD
@@ -1108,9 +1108,9 @@ Se a jogada vence, `mentor_at` é omitido (`None`). Caso contrário, a construç
 
 ---
 
-## 48. Estratégia de jogo do Eriguei
+## 48. Estratégia de jogo do Boboca
 
-A estratégia do Eriguei é:
+A estratégia do Boboca é:
 
 ```text
 1. Vencer imediatamente se possível.
@@ -1142,7 +1142,7 @@ Então a IA pode explorar uma árvore de possibilidades e escolher a linha mais 
 
 ## 50. Comparação entre V1, V2 e V3
 
-| Critério | V1 | V2 | V3 / Eriguei |
+| Critério | V1 | V2 | V3 / Boboca |
 |---|---|---|---|
 | Tipo | gulosa | tática 1-turno | adversarial profunda |
 | Representação | dicionários | dataclasses + matrizes | estado imutável linearizado |
@@ -1204,7 +1204,7 @@ Ela busca até certa profundidade, não até o fim completo da partida.
 
 ---
 
-## 53. Quando Eriguei tende a vencer
+## 53. Quando Boboca tende a vencer
 
 Ele tende a vencer contra bots que:
 
@@ -1216,7 +1216,7 @@ Ele tende a vencer contra bots que:
 
 ---
 
-## 54. Quando Eriguei pode perder
+## 54. Quando Boboca pode perder
 
 Ele pode perder se:
 
@@ -1306,7 +1306,7 @@ Criar respostas preparadas para os primeiros posicionamentos.
 
 ## 58. Resumo executivo
 
-O **Eriguei** é a IA mais sofisticada do projeto. Ele transforma o bot em um motor de decisão adversarial, usando Negamax, poda alfa-beta, tabela de transposição, ordenação de jogadas, aprofundamento iterativo e fallback seguro. Seu objetivo não é apenas fazer uma boa jogada agora, mas escolher uma jogada que continue forte contra a melhor resposta possível do inimigo.
+O **Boboca** é a IA mais sofisticada do projeto. Ele transforma o bot em um motor de decisão adversarial, usando Negamax, poda alfa-beta, tabela de transposição, ordenação de jogadas, aprofundamento iterativo e fallback seguro. Seu objetivo não é apenas fazer uma boa jogada agora, mas escolher uma jogada que continue forte contra a melhor resposta possível do inimigo.
 
 ### Classificação final
 
