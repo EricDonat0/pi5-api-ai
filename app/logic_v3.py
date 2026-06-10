@@ -162,7 +162,6 @@ def _is_valid_move_destination(state: GameState, from_idx: int, to_idx: int) -> 
 def _response_from_move(move: SearchMove) -> PlayerTurnResponse:
     move_r, move_c = _row_col(move.to_idx)
 
-    # Pela regra documentada no schema, mentor_at pode ser omitido em jogada de vitoria.
     if move.is_win or move.build_idx is None:
         return PlayerTurnResponse(
             professor=PROFESSORS[move.prof_idx],
@@ -179,7 +178,7 @@ def _response_from_move(move: SearchMove) -> PlayerTurnResponse:
 
 
 # ---------------------------------------------------------------------------
-# Geracao de jogadas legais
+# Geracao de jogadas Bacanas
 # ---------------------------------------------------------------------------
 
 
@@ -275,7 +274,7 @@ def has_immediate_win(state: GameState, team_id: int) -> bool:
 
 
 def apply_move(state: GameState, move: SearchMove) -> GameState:
-    """Aplica jogada nao-terminal. Jogadas de vitoria sao tratadas antes."""
+    """Aplica jogada nao-terminal."""
     positions = list(state.positions)
     positions[move.prof_idx] = move.to_idx
 
@@ -288,7 +287,7 @@ def apply_move(state: GameState, move: SearchMove) -> GameState:
 
 
 # ---------------------------------------------------------------------------
-# Heuristicas de avaliacao
+# Heuristicas de avaliação
 # ---------------------------------------------------------------------------
 
 
@@ -421,7 +420,7 @@ def evaluate_state(state: GameState, perspective_team: int) -> int:
     """
     Avaliacao estatica do tabuleiro.
 
-    Retorna positivo se o estado e bom para perspective_team e negativo se e bom
+    Retorna positivo se o estado é bom para perspective_team e negativo se e bom
     para o adversario. Terminais sao tratados no negamax; aqui avaliamos perigo,
     pressao, mobilidade e altura.
     """
@@ -678,7 +677,7 @@ class SearchEngine:
                 best_move = current_best
                 best_score = current_best_score
 
-                # Se achou uma vitoria forcada, nao precisa gastar mais tempo.
+                # Se achou uma vitoria forçada, nao precisa gastar mais tempo.
                 if best_score >= WIN_SCORE - 1000:
                     break
 
@@ -690,7 +689,7 @@ class SearchEngine:
     def _fallback_move(self, state: GameState, team_id: int, moves: Sequence[SearchMove]) -> SearchMove:
         """
         Jogada segura caso a busca profunda nao complete a tempo.
-        Avalia o estado apos a nossa jogada e penaliza fortemente entregar vitoria imediata.
+        Avalia o estado após a nossa jogada e penaliza fortemente entregar vitória imediata.
         """
         enemy_team = _opponent(team_id)
         best = moves[0]
@@ -722,7 +721,7 @@ class SearchEngine:
 
 
 # ---------------------------------------------------------------------------
-# Funcoes publicas chamadas pela API
+# Funções publicas chamadas pela API
 # ---------------------------------------------------------------------------
 
 
@@ -731,13 +730,13 @@ def choose_setup(board: List[List[Cell]], team_id: int = 1) -> SetupResponse:
     Posicionamento inicial competitivo.
 
     A ideia nao e simplesmente ocupar o centro absoluto sempre. Em torneio, o setup
-    costuma ser alternado; entao a segunda peca precisa complementar a primeira.
+    costuma ser alternado; entao a segunda peça precisa complementar a primeira.
 
     Criterios:
     - preferir centro e anel interno;
     - manter boa mobilidade;
-    - se ja existe um aliado, ficar a distancia 2 ou 3 dele;
-    - evitar canto/borda quando houver opcoes melhores;
+    - se já existe um aliado, ficar a distancia 2 ou 3 dele;
+    - evitar canto/borda quando houver opcões melhores;
     - nao grudar nos inimigos durante a abertura.
     """
     state = _board_to_state(board)
@@ -759,7 +758,7 @@ def choose_setup(board: List[List[Cell]], team_id: int = 1) -> SetupResponse:
         row, col = _row_col(index)
         score = 0
 
-        # Centro e anel interno dominam o comeco.
+        # Centro e anel interno dominam o começo.
         score += CENTER_BONUS[index] * 1_000
         score += len(NEIGHBORS[index]) * 80
 
@@ -768,7 +767,7 @@ def choose_setup(board: List[List[Cell]], team_id: int = 1) -> SetupResponse:
         elif row in (0, 4) or col in (0, 4):
             score -= 450
 
-        # Complementa o aliado: distancia 2 costuma dar cobertura sem bloquear.
+        # Complementa o aliado: distancia de 2 blocos costuma dar cobertura sem bloquear.
         for ally in my_positions:
             ar, ac = _row_col(ally)
             cheb = max(abs(row - ar), abs(col - ac))
