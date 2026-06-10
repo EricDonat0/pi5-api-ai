@@ -1,16 +1,3 @@
-"""
-Motor de decisao competitivo para o jogo Palerma/Santorini-like.
-
-Ideia central:
-- Gerar todas as jogadas legais: mover um professor e depois construir.
-- Procurar vitorias imediatas.
-- Usar busca adversarial Negamax com poda alfa-beta para simular respostas do inimigo.
-- Usar uma heuristica forte apenas quando a busca nao consegue calcular ate o fim.
-
-Essa abordagem e mais forte que uma heuristica gulosa porque considera a melhor resposta
-possivel do adversario, nao apenas o beneficio imediato da jogada atual.
-"""
-
 from __future__ import annotations
 
 import os
@@ -44,7 +31,6 @@ TEAM_TO_PROF_INDEXES: Dict[int, Tuple[int, int]] = {
 }
 OPPONENT_TEAM: Dict[int, int] = {1: 2, 2: 1}
 
-# Pontuacoes grandes. Mantemos terminal muito maior que qualquer heuristica.
 WIN_SCORE = 1_000_000_000
 INF = 10**18
 
